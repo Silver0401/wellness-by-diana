@@ -308,15 +308,15 @@ export function Hero() {
               />
             </div>
             <span className="absolute -bottom-3 right-[-6%] rounded-full bg-[#f8f6f0] px-5 py-2 text-[13px] font-medium text-[#354932] shadow-[0_12px_28px_rgba(0,0,0,0.22)]">
-              Hola, soy Diana
+              Hola, soy
             </span>
           </div>
           <div>
             <h2 className="display text-[clamp(3.5rem,11vw,9rem)] leading-[0.85] tracking-[-0.02em]">
-              Licenciada en
+              Diana
             </h2>
             <p className="meta-label mt-4 text-[#f8f6f0]/75">
-              Nutrición y Bienestar Integral
+              Licenciada en Nutrición y Bienestar Integral
             </p>
           </div>
         </div>
