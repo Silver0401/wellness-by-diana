@@ -7,7 +7,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { HERO_STATEMENT, SCROLL_CUE, MARQUEE } from "@/lib/content";
 import { ArrowDown } from "@/components/icons";
-import { PLANT_OUTER_TRANSFORM, PLANT_INNER_TRANSFORM, PLANT_PATH_D } from "@/components/PlantMark";
+import {
+  PLANT_OUTER_TRANSFORM,
+  PLANT_INNER_TRANSFORM,
+  PLANT_PATH_D,
+} from "@/components/PlantMark";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -32,12 +36,34 @@ export function Hero() {
   const root = useRef<HTMLElement>(null);
   const coverWrap = useRef<HTMLDivElement>(null); // scroll-zoom target
   const coverSvg = useRef<SVGSVGElement>(null); // intro target
+  const plantMaskOffset = useRef<SVGGElement>(null);
+  const plantOutlineOffset = useRef<SVGGElement>(null);
   const photoWrap = useRef<HTMLDivElement>(null); // counter-zoom for depth
   const vignette = useRef<HTMLDivElement>(null); // optical corner darkening
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useGSAP(
     () => {
+      const getPlantYOffset = () =>
+        window.matchMedia("(max-width: 767px) and (orientation: portrait)")
+          .matches
+          ? -Math.min(86, Math.max(58, window.innerHeight * 0.085))
+          : 0;
+      const applyPlantOffset = () => {
+        const s = Math.max(window.innerWidth, window.innerHeight) / 1000;
+        const y = getPlantYOffset() / s;
+        for (const group of [
+          plantMaskOffset.current,
+          plantOutlineOffset.current,
+        ]) {
+          if (y) group?.setAttribute("transform", `translate(0 ${y})`);
+          else group?.removeAttribute("transform");
+        }
+      };
+
+      applyPlantOffset();
+      window.addEventListener("resize", applyPlantOffset);
+
       // ---------- (1) intro: hole settles shut, statement rises ----------
       gsap.from(coverSvg.current, {
         scale: 1.6,
@@ -78,7 +104,9 @@ export function Hero() {
               // peak skewed to ~0.63 (prog^1.5) so it lands once the photo,
               // not the white cover, fills the frame; amplitude 0.7
               const p = Math.pow(self.progress, 1.5);
-              vignette.current.style.opacity = String(Math.sin(p * Math.PI) * 0.7);
+              vignette.current.style.opacity = String(
+                Math.sin(p * Math.PI) * 0.7,
+              );
             }
           },
         },
@@ -138,6 +166,10 @@ export function Hero() {
       });
 
       // ---------- (3) hover: particle disintegration ----------
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        return () => window.removeEventListener("resize", applyPlantOffset);
+      }
+
       const canvas = canvasRef.current!;
       const ctx = canvas.getContext("2d")!;
       const plantPath = new Path2D(PLANT_PATH_D);
@@ -156,9 +188,11 @@ export function Hero() {
 
       let W = 0;
       let H = 0;
+      let plantYOffset = 0;
       const layout = () => {
         W = window.innerWidth;
         H = window.innerHeight;
+        plantYOffset = getPlantYOffset();
         canvas.width = photoC.width = maskC.width = W;
         canvas.height = photoC.height = maskC.height = H;
 
@@ -173,7 +207,14 @@ export function Hero() {
 
         // plant silhouette in screen space (same slice mapping as the cover svg)
         const s = Math.max(W, H) / 1000;
-        maskCtx.setTransform(s, 0, 0, s, (W - 1000 * s) / 2, (H - 1000 * s) / 2);
+        maskCtx.setTransform(
+          s,
+          0,
+          0,
+          s,
+          (W - 1000 * s) / 2,
+          (H - 1000 * s) / 2 + plantYOffset,
+        );
         maskCtx.translate(OUTER.tx, OUTER.ty);
         maskCtx.scale(OUTER.s, OUTER.s);
         maskCtx.translate(INNER.tx, INNER.ty);
@@ -183,9 +224,21 @@ export function Hero() {
         maskCtx.setTransform(1, 0, 0, 1, 0, 0);
         maskPx = maskCtx.getImageData(0, 0, W, H).data;
       };
+      const onResize = () => {
+        const nextW = window.innerWidth;
+        const nextH = window.innerHeight;
+        const nextPlantYOffset = getPlantYOffset();
+        if (
+          nextW === W &&
+          Math.abs(nextH - H) <= 120 &&
+          nextPlantYOffset === plantYOffset
+        )
+          return;
+        layout();
+      };
       img.onload = layout;
       layout();
-      window.addEventListener("resize", layout);
+      window.addEventListener("resize", onResize);
 
       const inPlant = (x: number, y: number) => {
         if (!maskPx) return false;
@@ -201,8 +254,15 @@ export function Hero() {
       };
 
       type Shard = {
-        x: number; y: number; vx: number; vy: number;
-        size: number; rot: number; vr: number; life: number; color: string;
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
+        size: number;
+        rot: number;
+        vr: number;
+        life: number;
+        color: string;
       };
       type Gap = { x: number; y: number; size: number; life: number };
       const shards: Shard[] = [];
@@ -225,11 +285,15 @@ export function Hero() {
           if (!inPlant(px, py)) continue;
           const size = rand(4, 11);
           shards.push({
-            x: px, y: py,
+            x: px,
+            y: py,
             vx: (px - e.clientX) * 0.45 + rand(-2, 2),
             vy: (py - e.clientY) * 0.45 + rand(-3.4, -0.8),
-            size, rot: rand(0, Math.PI), vr: rand(-0.22, 0.22),
-            life: 1, color: colorAt(px, py),
+            size,
+            rot: rand(0, Math.PI),
+            vr: rand(-0.22, 0.22),
+            life: 1,
+            color: colorAt(px, py),
           });
           gaps.push({ x: px, y: py, size: size + 3, life: 1 });
         }
@@ -244,7 +308,10 @@ export function Hero() {
         for (let i = gaps.length - 1; i >= 0; i--) {
           const g = gaps[i];
           g.life -= 0.016;
-          if (g.life <= 0) { gaps.splice(i, 1); continue; }
+          if (g.life <= 0) {
+            gaps.splice(i, 1);
+            continue;
+          }
           ctx.globalAlpha = Math.min(1, g.life * 1.4);
           ctx.fillStyle = "#ffffff";
           ctx.fillRect(g.x - g.size / 2, g.y - g.size / 2, g.size, g.size);
@@ -253,7 +320,10 @@ export function Hero() {
         for (let i = shards.length - 1; i >= 0; i--) {
           const p = shards[i];
           p.life -= 0.014;
-          if (p.life <= 0) { shards.splice(i, 1); continue; }
+          if (p.life <= 0) {
+            shards.splice(i, 1);
+            continue;
+          }
           p.x += p.vx;
           p.y += p.vy;
           p.vx *= 0.965;
@@ -274,7 +344,8 @@ export function Hero() {
 
       return () => {
         gsap.ticker.remove(render);
-        window.removeEventListener("resize", layout);
+        window.removeEventListener("resize", applyPlantOffset);
+        window.removeEventListener("resize", onResize);
         root.current?.removeEventListener("pointermove", onMove);
       };
     },
@@ -282,13 +353,19 @@ export function Hero() {
   );
 
   return (
-    <section ref={root} className="fixed inset-0 z-10 overflow-hidden bg-white text-black">
+    <section
+      ref={root}
+      className="fixed inset-0 z-10 overflow-hidden bg-white text-black"
+    >
       {/* z-0: the world you dive INTO — Diana's forest reveal. Her name
           "DIANA" completes the "Wellness by" wordmark punched into the cover. */}
       <div
         ref={photoWrap}
         className="absolute inset-0 will-change-transform"
-        style={{ background: "linear-gradient(165deg,#55744f 0%,#3b5237 48%,#20301d 100%)" }}
+        style={{
+          background:
+            "linear-gradient(165deg,#55744f 0%,#3b5237 48%,#20301d 100%)",
+        }}
       >
         {/* soft brand glows */}
         <div className="pointer-events-none absolute -right-[8%] -top-[10%] h-[46vw] w-[46vw] rounded-full bg-[radial-gradient(circle,rgba(200,197,141,0.45),transparent_70%)] blur-3xl" />
@@ -297,7 +374,7 @@ export function Hero() {
         {/* Diana — photo + name */}
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-7 px-6 text-center text-[#f8f6f0]">
           <div className="relative">
-            <div className="relative h-[38vh] max-h-[380px] min-h-[220px] w-[38vh] max-w-[380px] min-w-[220px] overflow-hidden rounded-full ring-[6px] ring-[#f8f6f0]/15 shadow-[0_30px_60px_rgba(0,0,0,0.32)]">
+            <div className="relative h-[32dvh] max-h-[300px] min-h-[184px] w-[32dvh] max-w-[300px] min-w-[184px] overflow-hidden rounded-full ring-[6px] ring-cream/15 shadow-[0_30px_60px_rgba(0,0,0,0.32)] md:h-[38dvh] md:max-h-[380px] md:min-h-[220px] md:w-[38dvh] md:max-w-[380px] md:min-w-[220px]">
               <Image
                 src="/images/diana-photo.jpg"
                 alt="Diana Paola Vázquez Menchaca"
@@ -307,7 +384,7 @@ export function Hero() {
                 className="object-cover"
               />
             </div>
-            <span className="absolute -bottom-3 right-[-6%] rounded-full bg-[#f8f6f0] px-5 py-2 text-[13px] font-medium text-[#354932] shadow-[0_12px_28px_rgba(0,0,0,0.22)]">
+            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-[var(--color-olive)] px-4 py-1.5 text-[11px] font-medium text-forest shadow-[0_12px_28px_rgba(0,0,0,0.22)] md:-bottom-3 md:left-auto md:right-[-6%] md:translate-x-0 md:px-5 md:py-2 md:text-[13px]">
               Hola, soy
             </span>
           </div>
@@ -335,15 +412,28 @@ export function Hero() {
         >
           <defs>
             {/* blur + alpha re-threshold = smooth, rounded plant contour */}
-            <filter id="plantSmooth" x="-20%" y="-20%" width="140%" height="140%">
+            <filter
+              id="plantSmooth"
+              x="-20%"
+              y="-20%"
+              width="140%"
+              height="140%"
+            >
               <feGaussianBlur stdDeviation="2.6" />
               <feComponentTransfer>
                 <feFuncA type="linear" slope="16" intercept="-7" />
               </feComponentTransfer>
             </filter>
-            <mask id="plantHole" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="1000">
+            <mask
+              id="plantHole"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="1000"
+              height="1000"
+            >
               <rect width="1000" height="1000" fill="white" />
-              <g filter="url(#plantSmooth)">
+              <g ref={plantMaskOffset} filter="url(#plantSmooth)">
                 <g transform={PLANT_OUTER_TRANSFORM}>
                   <g transform={PLANT_INNER_TRANSFORM}>
                     <path d={PLANT_PATH_D} fill="black" />
@@ -352,11 +442,23 @@ export function Hero() {
               </g>
             </mask>
           </defs>
-          <rect width="1000" height="1000" fill="#ffffff" mask="url(#plantHole)" />
+          <rect
+            width="1000"
+            height="1000"
+            fill="#ffffff"
+            mask="url(#plantHole)"
+          />
           {/* faint contour keeps the mark legible where the photo runs light */}
-          <g className="plant-outline" transform={PLANT_OUTER_TRANSFORM} opacity="0.45">
-            <g transform={PLANT_INNER_TRANSFORM}>
-              <path d={PLANT_PATH_D} fill="none" stroke="#354932" strokeWidth={40} />
+          <g ref={plantOutlineOffset} className="plant-outline" opacity="0.45">
+            <g transform={PLANT_OUTER_TRANSFORM}>
+              <g transform={PLANT_INNER_TRANSFORM}>
+                <path
+                  d={PLANT_PATH_D}
+                  fill="none"
+                  stroke="#354932"
+                  strokeWidth={40}
+                />
+              </g>
             </g>
           </g>
         </svg>
@@ -364,11 +466,11 @@ export function Hero() {
         {/* awwwards wordmark ON the white cover — it scales up and dissolves
             with the dive, handing off to "DIANA" revealed in the world behind,
             so the phrase reads "Wellness by … Diana" across the zoom */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center pt-[9.5vh]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center pt-[max(9.5dvh,84px)]">
           <span className="display leading-[0.8] tracking-[-0.02em] text-[#354932] text-[clamp(3rem,9.5vw,8.5rem)]">
             Wellness
           </span>
-          <span className="display mt-1 normal-case leading-none tracking-[0.04em] text-[#a8a35f] text-[clamp(1.1rem,2.6vw,2.2rem)]">
+          <span className="display mt-1 normal-case leading-none tracking-[0.04em] text-[var(--color-olive)] text-[clamp(1.1rem,2.6vw,2.2rem)]">
             by
           </span>
         </div>
@@ -386,7 +488,10 @@ export function Hero() {
       />
 
       {/* z-30: disintegration particles */}
-      <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 z-30" />
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none absolute inset-0 z-30"
+      />
 
       {/* z-40: looping marquee strip */}
       <div className="hero-marquee absolute inset-x-0 bottom-[128px] z-40 overflow-hidden border-y border-black/10 py-2">
@@ -394,7 +499,10 @@ export function Hero() {
           {[0, 1, 2, 3].map((dup) => (
             <div key={dup} className="flex shrink-0" aria-hidden={dup !== 0}>
               {MARQUEE.map((item) => (
-                <span key={item} className="meta-label flex items-center text-black/60">
+                <span
+                  key={item}
+                  className="meta-label flex items-center text-black/60"
+                >
                   <span className="mx-6">✦</span>
                   {item}
                 </span>

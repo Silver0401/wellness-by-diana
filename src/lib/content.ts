@@ -22,9 +22,11 @@ export const NAV_CTA = "Agenda tu consulta";
 
 // --- Hero ---
 // rendered line by line; split on "\n" in Hero.tsx
-export const HERO_STATEMENT = "Nutrición con acompañamiento real,\nsin dietas extremas.";
+export const HERO_STATEMENT =
+  "Nutrición con acompañamiento real,\nsin dietas extremas.";
 export const HERO_LOCATION = "Monterrey · En línea a todo México";
-export const HERO_CREDENTIAL = "Lic. en Nutrición y Bienestar Integral · Educadora en Diabetes";
+export const HERO_CREDENTIAL =
+  "Lic. en Nutrición y Bienestar Integral · Educadora en Diabetes";
 export const SCROLL_CUE = "Baja para entrar";
 
 // looping marquee — Diana's positioning pillars
@@ -39,7 +41,7 @@ export const MARQUEE = [
 export const ENFOQUE_LABEL = "Mi enfoque";
 // splits on ": " for line breaks
 export const ENFOQUE_QUOTE =
-  "La nutrición no es seguir una dieta en un papel: es aprender a hacer elecciones conscientes sobre tu salud y tu alimentación.";
+  "Para mí, una consulta va más allá de una dieta en un papel: es que aprendas a hacer elecciones conscientes sobre tu cuerpo, tu comida y tu bienestar.";
 
 export const ENFOQUE_CARDS: EnfoqueCard[] = [
   {
@@ -65,12 +67,13 @@ export const ENFOQUE_CARDS: EnfoqueCard[] = [
 ];
 
 export const ENFOQUE_INTRO =
-  "¡Hola! Soy Diana, nutrióloga y educadora en diabetes. Si quieres aprender a mejorar tus hábitos y tu salud sin dietas extremas, estás en el lugar correcto.";
+  "Mi objetivo no es darte reglas que abandones en dos semanas, sino acompañarte para que entiendas tu cuerpo y tomes decisiones que sí puedas sostener. Sin culpa, sin extremos, a tu ritmo.";
 
 // --- Servicios / precios ---
 export const SERVICIOS_LABEL = "Consultas";
 export const SERVICIOS_TITLE = "Elige cómo empezar";
-export const SERVICIOS_NOTE = "📍 Presencial en Monterrey · En línea desde donde estés";
+export const SERVICIOS_NOTE =
+  "📍 Presencial en Monterrey · En línea desde donde estés";
 
 export const PRICING: PriceCard[] = [
   {
@@ -114,7 +117,7 @@ export const CAMINO = {
 };
 export const TRIPLE = {
   title: "Triple Wellness",
-  text: "Vengan tres el mismo mes — amigas, familia, quien tú quieras — y la tercera persona paga la mitad. Cada quien recibe su intervención y recomendaciones individuales y 100% personalizadas, y la persona que paga la mitad se la pueden ir rotando. Ese es el precio del programa mientras las tres sigan activas.",
+  text: "Vengan tres el mismo mes. Amigas, familia, quien tú quieras! y la tercera persona paga la mitad. Cada quien recibe su intervención y recomendaciones individuales y 100% personalizadas, y la persona que paga la mitad se la pueden ir rotando. Ese es el precio del programa mientras las tres sigan activas.",
 };
 
 // --- Testimonios ---
@@ -151,7 +154,8 @@ export const TESTIMONIALS: Testimonial[] = [
 // --- Redes ---
 export const REDES_LABEL = "Sígueme";
 export const REDES_TITLE = "Para que cuidarte se te haga fácil";
-export const REDES_NOTE = "Educación en diabetes, tips que sí puedes aplicar y mi día a día.";
+export const REDES_NOTE =
+  "Educación en diabetes, tips que sí puedes aplicar y mi día a día.";
 
 export const REDES: RedCard[] = [
   {

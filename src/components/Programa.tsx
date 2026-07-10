@@ -4,13 +4,18 @@ export function Programa() {
   const steps = Array.from({ length: CAMINO.stepsTotal }, (_, i) => i + 1);
 
   return (
-    <section id="programa" className="relative z-20 bg-cream py-28 text-ink md:py-36">
+    <section
+      id="programa"
+      className="relative z-20 bg-cream py-28 text-ink md:py-36"
+    >
       <div className="grid-layout">
         <div className="col-span-12 mb-12">
           <span className="meta-label mb-4 block text-forest-light">
             {PROGRAMA_LABEL}
           </span>
-          <h2 className="display text-statement text-forest">{PROGRAMA_TITLE}</h2>
+          <h2 className="display text-statement text-forest">
+            {PROGRAMA_TITLE}
+          </h2>
         </div>
 
         {/* camino wellness */}
@@ -29,13 +34,19 @@ export function Programa() {
                 <div
                   key={n}
                   data-reveal="pop"
-                  style={{ "--reveal-delay": `${0.25 + n * 0.09}s` } as React.CSSProperties}
+                  style={
+                    {
+                      "--reveal-delay": `${0.25 + n * 0.09}s`,
+                    } as React.CSSProperties
+                  }
                   className={`flex h-14 w-14 items-center justify-center rounded-full text-lg font-bold ${
                     done
                       ? "bg-olive text-forest"
                       : "border-2 border-olive text-olive"
                   }`}
-                  aria-label={done ? `Consulta ${n} completada` : `Consulta ${n}`}
+                  aria-label={
+                    done ? `Consulta ${n} completada` : `Consulta ${n}`
+                  }
                 >
                   {done ? "✓" : n}
                 </div>
@@ -43,7 +54,11 @@ export function Programa() {
             })}
             <div
               data-reveal="pop"
-              style={{ "--reveal-delay": `${0.25 + 6 * 0.09}s` } as React.CSSProperties}
+              style={
+                {
+                  "--reveal-delay": `${0.25 + 6 * 0.09}s`,
+                } as React.CSSProperties
+              }
               className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-olive-deep text-xl text-olive"
               aria-label="Premio"
             >
@@ -63,7 +78,7 @@ export function Programa() {
         >
           <div className="flex flex-wrap items-center gap-4">
             <span className="display rounded-full bg-olive px-4 py-1.5 text-[12px] text-forest">
-              3×2½
+              3
             </span>
             <h3 className="display text-[22px] text-forest">{TRIPLE.title}</h3>
           </div>

@@ -20,29 +20,33 @@ export function Enfoque() {
   return (
     <section
       id="enfoque"
-      className="relative z-20 overflow-hidden bg-cream py-28 text-ink md:py-36"
+      className="relative z-20 overflow-hidden bg-cream text-ink"
     >
-      <div className="grid-layout">
-        <span className="meta-label col-span-12 mb-8 block text-forest-light">
-          {ENFOQUE_LABEL}
-        </span>
+      <div className="bg-forest py-20 text-cream md:py-28">
+        <div className="grid-layout">
+          <span className="meta-label col-span-12 mb-8 block text-olive">
+            {ENFOQUE_LABEL}
+          </span>
 
-        <h2 className="col-span-12 display text-statement text-forest md:col-span-11">
-          {[line1 + ":", line2].map((line, i) => (
-            <span key={i} className="block overflow-hidden pb-[0.12em]">
-              <span
-                data-reveal="line"
-                className="block"
-                style={{ "--reveal-delay": `${i * 0.12}s` } as React.CSSProperties}
-              >
-                {line}
+          <h2 className="col-span-12 display max-w-[1180px] text-[clamp(2.7rem,13vw,6.8rem)] leading-[0.86] tracking-normal md:col-span-11 md:text-[clamp(4rem,7vw,7.5rem)]">
+            {[line1 + ":", line2].map((line, i) => (
+              <span key={i} className="block pb-[0.12em]">
+                <span
+                  data-reveal="line"
+                  className="block"
+                  style={
+                    { "--reveal-delay": `${i * 0.12}s` } as React.CSSProperties
+                  }
+                >
+                  {line}
+                </span>
               </span>
-            </span>
-          ))}
-        </h2>
+            ))}
+          </h2>
+        </div>
       </div>
 
-      <div className="grid-layout mt-16 items-start gap-y-12 md:mt-24">
+      <div className="grid-layout py-20 items-start gap-y-12 md:py-28">
         {/* editorial portrait + intro */}
         <div className="col-span-12 md:col-span-5">
           <div data-reveal className="relative mx-auto max-w-[440px] md:mx-0">
@@ -59,7 +63,7 @@ export function Enfoque() {
               Hola, soy Diana ✦
             </span>
           </div>
-          <p className="mt-10 max-w-[440px] text-[15px] leading-relaxed text-forest-light">
+          <p className="mt-10 max-w-[520px] text-[17px] leading-relaxed text-forest md:text-[19px]">
             {ENFOQUE_INTRO}
           </p>
         </div>
@@ -72,13 +76,19 @@ export function Enfoque() {
               <div
                 key={card.title}
                 data-reveal
-                style={{ "--reveal-delay": `${(i % 2) * 0.1}s` } as React.CSSProperties}
+                style={
+                  {
+                    "--reveal-delay": `${(i % 2) * 0.1}s`,
+                  } as React.CSSProperties
+                }
                 className="rounded-[20px] border border-sand bg-white p-8 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(53,73,50,0.14)]"
               >
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-[14px] bg-forest text-cream">
                   <Icon className="h-5.5 w-5.5" />
                 </div>
-                <h3 className="display text-[17px] text-forest">{card.title}</h3>
+                <h3 className="display text-[17px] text-forest">
+                  {card.title}
+                </h3>
                 <p className="mt-2 text-[14px] leading-relaxed text-forest-light">
                   {card.text}
                 </p>

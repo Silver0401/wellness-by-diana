@@ -29,19 +29,19 @@ export function FooterCTA() {
     <section
       ref={root}
       id="contacto"
-      className="relative z-20 flex min-h-screen flex-col bg-forest-deep text-cream"
+      className="relative z-20 flex min-h-[100dvh] flex-col bg-forest-deep pb-24 text-cream md:pb-0"
     >
       <div className="relative flex flex-1 items-center justify-center overflow-hidden">
         {/* floating portrait orb */}
         <div
           ref={orb}
-          className="pointer-events-none absolute top-[14%] h-[38vh] w-[38vh] overflow-hidden rounded-full border-4 border-cream/20 opacity-95 shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
+          className="pointer-events-none absolute top-[10%] h-[26dvh] w-[26dvh] overflow-hidden rounded-full border-4 border-cream/20 opacity-95 shadow-[0_30px_80px_rgba(0,0,0,0.45)] md:top-[14%] md:h-[38dvh] md:w-[38dvh]"
         >
           <Image
             src="/images/diana-photo.jpg"
             alt=""
             fill
-            sizes="38vh"
+            sizes="(min-width: 768px) 38dvh, 26dvh"
             className="scale-110 object-cover object-[center_20%]"
           />
         </div>
@@ -55,7 +55,7 @@ export function FooterCTA() {
         </span>
 
         {/* centered CTA */}
-        <div className="relative z-10 mt-[22vh] text-center">
+        <div className="relative z-10 mt-[12dvh] text-center md:mt-[22dvh]">
           <h2 className="display text-[clamp(2.2rem,5.5vw,4rem)] leading-[1.05]">
             <span className="block overflow-hidden">
               <span data-reveal="line" className="block">
@@ -118,7 +118,7 @@ export function WhatsAppFloat() {
       href={WHATSAPP}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-2 bg-forest px-5 py-4 font-bold text-white shadow-[0_-6px_20px_rgba(0,0,0,0.25)] md:hidden"
+      className="fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-2 bg-forest px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 font-bold text-white shadow-[0_-6px_20px_rgba(0,0,0,0.25)] md:hidden"
     >
       {WA_FLOAT}
     </a>

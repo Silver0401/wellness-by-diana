@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { Menu, X } from "lucide-react";
 import { BRAND, NAV, NAV_CTA, WHATSAPP } from "@/lib/content";
+
+const MOBILE_NAV = [
+  ...NAV.slice(0, 2),
+  { label: "Programa", href: "#programa" },
+  ...NAV.slice(2),
+  { label: "Contacto", href: "#contacto" },
+];
 
 /**
  * Fixed header with two visual states:
@@ -18,6 +26,8 @@ import { BRAND, NAV, NAV_CTA, WHATSAPP } from "@/lib/content";
  */
 export function Header() {
   const [solid, setSolid] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const headerSolid = solid || menuOpen;
 
   useEffect(() => {
     const target = document.querySelector("#enfoque");
@@ -32,31 +42,44 @@ export function Header() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const { body, documentElement } = document;
+    const previousOverflow = body.style.overflow;
+    documentElement.classList.add("lenis-stopped");
+    body.style.overflow = "hidden";
+    return () => {
+      documentElement.classList.remove("lenis-stopped");
+      body.style.overflow = previousOverflow;
+    };
+  }, [menuOpen]);
+
   return (
     <>
       {/* solid-state backdrop — separate layer so the blend header stays clean */}
       <div
         aria-hidden
         className={`fixed inset-x-0 top-0 z-[78] h-[70px] border-b border-sand bg-cream/90 backdrop-blur-md transition-opacity duration-300 ${
-          solid ? "opacity-100" : "pointer-events-none opacity-0"
+          headerSolid ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       />
 
       <header
-        className={`fixed inset-x-0 top-0 z-[80] ${solid ? "" : "mix-blend-difference"}`}
+        className={`fixed inset-x-0 top-0 z-[80] ${headerSolid ? "" : "mix-blend-difference"}`}
       >
         <div
           className={`grid-layout items-center py-[18px] ${
-            solid ? "text-forest" : "text-white"
+            headerSolid ? "text-forest" : "text-white"
           }`}
         >
           <a
             href="#top"
             className="col-span-6 flex items-center"
             aria-label={`${BRAND} — Inicio`}
+            onClick={() => setMenuOpen(false)}
           >
             <Image
-              src={solid ? "/images/logo-diana.png" : "/images/logo-diana-white.png"}
+              src={headerSolid ? "/images/logo-diana.png" : "/images/logo-diana-white.png"}
               alt="Wellness by Diana"
               width={560}
               height={180}
@@ -76,11 +99,53 @@ export function Header() {
               </a>
             ))}
           </nav>
+
+          <div className="col-span-6 flex justify-end md:hidden">
+            <button
+              type="button"
+              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-nav"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:bg-forest/10"
+            >
+              {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </header>
 
+      {menuOpen && (
+        <div
+          id="mobile-nav"
+          className="fixed inset-x-0 top-[70px] z-[79] border-b border-sand bg-cream px-[var(--grid-margin)] pb-6 pt-3 text-forest shadow-[0_18px_45px_rgba(31,44,29,0.16)] md:hidden"
+        >
+          <nav className="flex flex-col">
+            {MOBILE_NAV.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className="meta-label flex min-h-11 items-center border-b border-sand text-[15px]"
+              >
+                {item.label}
+              </a>
+            ))}
+            <a
+              href={WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              className="meta-label mt-5 flex min-h-11 items-center justify-center rounded-full bg-burgundy px-5 text-[13px] text-white"
+            >
+              {NAV_CTA}
+            </a>
+          </nav>
+        </div>
+      )}
+
       {/* unblended fixed sibling: brand-color CTA */}
-      <div className="pointer-events-none fixed right-[var(--grid-margin)] top-0 z-[81] flex h-[70px] items-center">
+      <div className="pointer-events-none fixed right-[var(--grid-margin)] top-0 z-[81] hidden h-[70px] items-center md:flex">
         <a
           href={WHATSAPP}
           target="_blank"

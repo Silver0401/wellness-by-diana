@@ -135,10 +135,14 @@
   --color-cream: #f8f6f0;
   --color-cream-deep: #f0ecdf;
   --color-tint: #edf1eb;
-  --color-olive: #c8c58d;
-  --color-olive-deep: #a8a35f;
-  --color-burgundy: #73171f;
-  --color-burgundy-light: #8c2a33;
+  --color-olive: #c4a9e5;
+  --color-olive-deep: #9d86b9;
+  /* --color-olive: #c8c58d;
+  --color-olive-deep: #a8a35f; */
+  --color-burgundy: #865db7;
+  --color-burgundy-light: #865db7;
+  /* --color-burgundy: #73171f;
+  --color-burgundy-light: #8c2a33; */
   --color-sand: #dcd6c4;
 }
 
@@ -154,6 +158,8 @@
   body {
     @apply bg-black text-white;
     font-family: var(--font-display), system-ui, sans-serif;
+    /* color: #d8b9ff;
+    color: #865db7; */
   }
   /* Lenis */
   html.lenis,

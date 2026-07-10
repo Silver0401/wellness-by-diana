@@ -85,16 +85,20 @@ export function Testimonios() {
             >
               ←
             </button>
-            <div className="flex gap-2.5">
+            <div className="flex">
               {TESTIMONIALS.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => go(i)}
                   aria-label={`Ir al testimonio ${i + 1}`}
-                  className={`h-2 w-2 rounded-full transition-colors ${
-                    i === index ? "bg-forest" : "bg-sand hover:bg-olive-deep"
-                  }`}
-                />
+                  className="flex h-11 w-11 items-center justify-center rounded-full"
+                >
+                  <span
+                    className={`h-2 w-2 rounded-full transition-colors ${
+                      i === index ? "bg-forest" : "bg-sand hover:bg-olive-deep"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
             <button
