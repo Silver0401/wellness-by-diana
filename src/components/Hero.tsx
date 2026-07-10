@@ -313,10 +313,10 @@ export function Hero() {
           </div>
           <div>
             <h2 className="display text-[clamp(3.5rem,11vw,9rem)] leading-[0.85] tracking-[-0.02em]">
-              Diana
+              Licenciada en
             </h2>
             <p className="meta-label mt-4 text-[#f8f6f0]/75">
-              Paola Vázquez Menchaca · Nutrióloga
+              Nutrición y Bienestar Integral
             </p>
           </div>
         </div>
