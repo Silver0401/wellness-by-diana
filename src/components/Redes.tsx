@@ -12,7 +12,7 @@ export function Redes() {
     <section id="redes" className="relative z-20 bg-cream py-28 text-ink md:py-36">
       <div className="grid-layout">
         <div className="col-span-12 mb-12 max-w-[580px]">
-          <span className="meta-label mb-4 block text-forest-light">
+          <span className="meta-label mb-4 block text-amarillo">
             {REDES_LABEL}
           </span>
           <h2 className="display text-statement text-forest">{REDES_TITLE}</h2>

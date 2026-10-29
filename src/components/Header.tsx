@@ -150,7 +150,7 @@ export function Header() {
           href={WHATSAPP}
           target="_blank"
           rel="noopener noreferrer"
-          className="meta-label pointer-events-auto rounded-full bg-burgundy px-5 py-3 text-[12px] text-white shadow-[0_8px_22px_rgba(115,23,31,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-burgundy-light"
+          className="meta-label pointer-events-auto rounded-full bg-amarillo px-5 py-3 text-[12px] text-forest shadow-[0_8px_22px_rgba(115,23,31,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-amarillo"
         >
           {NAV_CTA}
         </a>

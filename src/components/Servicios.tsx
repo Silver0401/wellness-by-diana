@@ -38,7 +38,7 @@ function Card({ card, delay }: { card: PriceCard; delay: number }) {
       </h3>
       <div
         className={`display mt-3 text-[clamp(2rem,4vw,2.6rem)] leading-none ${
-          featured ? "text-olive" : "text-forest"
+          featured ? "text-amarillo" : "text-forest"
         }`}
       >
         {card.price}
@@ -82,7 +82,7 @@ export function Servicios() {
     >
       <div className="grid-layout">
         <div className="col-span-12 mb-14 max-w-[580px]">
-          <span className="meta-label mb-4 block text-forest-light">
+          <span className="meta-label mb-4 block text-amarillo">
             {SERVICIOS_LABEL}
           </span>
           <h2 className="display text-statement text-forest">{SERVICIOS_TITLE}</h2>

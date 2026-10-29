@@ -41,8 +41,8 @@ export function Programa() {
                   }
                   className={`flex h-14 w-14 items-center justify-center rounded-full text-lg font-bold ${
                     done
-                      ? "bg-olive text-forest"
-                      : "border-2 border-olive text-olive"
+                      ? "bg-amarillo text-forest"
+                      : "border-2 border-amarillo text-amarillo"
                   }`}
                   aria-label={
                     done ? `Consulta ${n} completada` : `Consulta ${n}`
@@ -59,7 +59,7 @@ export function Programa() {
                   "--reveal-delay": `${0.25 + 6 * 0.09}s`,
                 } as React.CSSProperties
               }
-              className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-olive-deep text-xl text-olive"
+              className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-amarillo text-xl text-amarillo"
               aria-label="Premio"
             >
               ★

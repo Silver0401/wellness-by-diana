@@ -41,7 +41,7 @@ export function Testimonios() {
     >
       <div className="grid-layout">
         <div className="col-span-12 mb-12 max-w-[580px]">
-          <span data-reveal className="meta-label mb-4 block text-forest-light">
+          <span data-reveal className="meta-label mb-4 block text-amarillo">
             {TESTIMONIOS_LABEL}
           </span>
           <h2 data-reveal className="display text-statement text-forest">

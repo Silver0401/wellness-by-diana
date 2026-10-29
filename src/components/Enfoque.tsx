@@ -24,7 +24,7 @@ export function Enfoque() {
     >
       <div className="bg-forest py-20 text-cream md:py-28">
         <div className="grid-layout">
-          <span className="meta-label col-span-12 mb-8 block text-olive">
+          <span className="meta-label col-span-12 mb-8 block text-amarillo">
             {ENFOQUE_LABEL}
           </span>
 

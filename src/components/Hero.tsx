@@ -384,7 +384,7 @@ export function Hero() {
                 className="object-cover"
               />
             </div>
-            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-[var(--color-olive)] px-4 py-1.5 text-[11px] font-medium text-forest shadow-[0_12px_28px_rgba(0,0,0,0.22)] md:-bottom-3 md:left-auto md:right-[-6%] md:translate-x-0 md:px-5 md:py-2 md:text-[13px]">
+            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-amarillo px-4 py-1.5 text-[11px] font-medium text-forest shadow-[0_12px_28px_rgba(0,0,0,0.22)] md:-bottom-3 md:left-auto md:right-[-6%] md:translate-x-0 md:px-5 md:py-2 md:text-[13px]">
               Hola, soy
             </span>
           </div>
@@ -470,7 +470,7 @@ export function Hero() {
           <span className="display leading-[0.8] tracking-[-0.02em] text-[#354932] text-[clamp(3rem,9.5vw,8.5rem)]">
             Wellness
           </span>
-          <span className="display mt-1 normal-case leading-none tracking-[0.04em] text-[var(--color-olive)] text-[clamp(1.1rem,2.6vw,2.2rem)]">
+          <span className="display mt-1 normal-case leading-none tracking-[0.04em] text-amarillo text-[clamp(1.1rem,2.6vw,2.2rem)]">
             by
           </span>
         </div>
